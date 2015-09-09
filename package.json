@@ -1,0 +1,61 @@
+{
+  "name": "kerplunk-blog",
+  "displayName": "Blog",
+  "description": "Basic, but extensible blog",
+  "version": "0.0.1",
+  "kerplunk": {
+    "recommended": [
+      "kerplunk-blog-hexa",
+      "kerplunk-blog-social-links"
+    ],
+    "permissions": {
+      "kerplunk-activityitem": {
+        "models": [
+          "ActivityItem"
+        ]
+      },
+      "kerplunk-identity": {
+        "models": [
+          "Identity"
+        ]
+      },
+      "globals": [
+        "routes"
+      ]
+    }
+  },
+  "keywords": [
+    "kerplunk-plugin",
+    "kp:Blogging"
+  ],
+  "engines": {
+    "node": ">=0.10"
+  },
+  "main": "./lib/blog.js",
+  "dependencies": {
+    "lodash": "^3.7.0",
+    "marked": "^0.3.5",
+    "moment": "^2.10.3",
+    "react": "^0.13.2",
+    "react-bootstrap": "0.24.5",
+    "react-markdown": "^1.0.3",
+    "rss": "0.3.x",
+    "when": "^3.7.3"
+  },
+  "devDependencies": {
+    "browserify": "^10.2.6",
+    "coffee-script": "^1.9.1",
+    "glut": "0.0.1",
+    "glut-coffee-amdify": "0.0.0",
+    "gulp": "^3.8.8",
+    "gulp-coffee": "^2.3.1",
+    "gulp-footer": "^1.0.5",
+    "gulp-header": "^1.2.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "vinyl-transform": "^1.0.0"
+  },
+  "scripts": {
+    "prepublish": "rm -rf ./lib ./public && gulp"
+  }
+}
