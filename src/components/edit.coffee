@@ -12,6 +12,7 @@ module.exports = React.createFactory React.createClass
     slug: @props.post?.slug ? @slug(@props.post?.slug ? '') ? ''
     body: @props.post?.body ? ''
     status: @props.post?.status ? @props.statuses[0].value
+    type: @props.post?.type ? 'post'
     _id: _id
     saveUrl: @saveUrl _id
     slugOverride: !!(@props.post._id)
@@ -64,6 +65,10 @@ module.exports = React.createFactory React.createClass
     @setState
       status: e.target.value
 
+  onTypeChange: (e) ->
+    @setState
+      type: e.target.value
+
   onSave: (e) ->
     e.preventDefault()
     console.log 'save form!', @state.title, @state.slug, @state.body
@@ -72,6 +77,7 @@ module.exports = React.createFactory React.createClass
       slug: @state.slug
       body: @state.body
       status: @state.status
+      type: @state.type
     @props.request.post "#{@state.saveUrl}.json", options, (err, data) =>
       return unless @isMounted()
       post = data?.state?.post ? data?.post
@@ -145,6 +151,22 @@ module.exports = React.createFactory React.createClass
                 value: status.value
                 selected: true if status.value == @state.status
               , status.display
+        DOM.p null,
+          'Type: '
+          DOM.select
+            name: 'type'
+            defaultValue: 'post'
+            value: @state.type
+            onChange: @onTypeChange
+            style:
+              width: '10em'
+          ,
+            _.map ['post', 'page'], (type) =>
+              DOM.option
+                key: type
+                value: type
+                selected: true if type == @state.type
+              , type
         DOM.div null,
           DOM.input
             type: 'submit'

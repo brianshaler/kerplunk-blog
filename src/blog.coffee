@@ -109,18 +109,28 @@ module.exports = (System) ->
     unless themes[themeName]?.components?.layout
       console.log themeName, 'not found. using', blogSettings.theme, 'instead'
       themeName = blogSettings.theme
-    where = {}
+    where =
+      type: 'post'
     unless req.isUser == true
       where.status = BlogPost.PUBLISHED
     if req.params.format == 'rss'
       where['attributes.componentPath'] =
         $exists: false
-    BlogPost
-    .where where
-    .sort createdAt: -1
-    .limit 10
-    .find (err, posts) ->
-      return next err if err
+    Promise.all [
+      BlogPost
+      .where where
+      .sort createdAt: -1
+      .limit 10
+      .find()
+      BlogPost
+      .where
+        status: (BlogPost.PUBLISHED if req.isUser == true)
+        type: 'page'
+      .sort createdAt: -1
+      .limit 10
+      .find()
+    ]
+    .done ([posts, pages]) ->
       # console.log 'posts', posts
       # console.log posts[0].permalink, 'permalink'
       if req.params.format == 'rss'
@@ -128,10 +138,13 @@ module.exports = (System) ->
       theme = themes[themeName]
       res.render theme.components.posts,
         posts: posts
+        pages: pages
         title: blogSettings.title
         blogSettings: blogSettings
         theme: theme
         layout: theme.components.layout
+    , (err) ->
+      next err
 
   showPost = (req, res, next) ->
     getPostById req.params.id

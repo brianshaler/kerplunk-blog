@@ -15,6 +15,9 @@ module.exports = (mongoose) ->
       required: true
       index:
         unique: true
+    type:
+      type: String
+      default: -> 'post'
     status:
       type: Number
       default: 0
@@ -102,9 +105,9 @@ module.exports = (mongoose) ->
 
     BlogPost
     .where where
-    .exec()
+    .find()
     .then (posts) =>
-      if posts.length > 0
+      if posts?.length > 0
         unique = true
         for post in posts
           if post.slug == newSlug
