@@ -57,8 +57,7 @@ module.exports = (System) ->
   updatePost = (post, obj) ->
     for k, v of obj
       post[k] = v
-    _routes = System.getGlobal 'routes'
-    console.log 'routes', _routes
+    _routes = System.getRoutes()
     mpromise = post
     .generateSlug _routes
     .then -> post.save()
