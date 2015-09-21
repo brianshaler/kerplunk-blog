@@ -2,7 +2,7 @@
   "name": "kerplunk-blog",
   "displayName": "Blog",
   "description": "Basic, but extensible blog",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "kerplunk": {
     "recommended": [
       "kerplunk-blog-hexa",
