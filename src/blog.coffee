@@ -35,7 +35,7 @@ module.exports = (System) ->
 
   createPost = (obj) ->
     post = new BlogPost obj
-    mpromise = post.generateSlug System.getGlobal 'routes'
+    mpromise = post.generateSlug System.getRoutes()
     .then -> post.save()
     .then -> post
     Promise mpromise
@@ -57,10 +57,9 @@ module.exports = (System) ->
   updatePost = (post, obj) ->
     for k, v of obj
       post[k] = v
-    _routes = System.getRoutes()
     mpromise = post
-    .generateSlug _routes
-    .then -> post.save()
+    .generateSlug System.getRoutes()
+    .then post.save
     .then -> post
     Promise mpromise
 
