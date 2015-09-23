@@ -115,6 +115,10 @@ module.exports = (System) ->
     if req.params.format == 'rss'
       where['attributes.componentPath'] =
         $exists: false
+    wherePage =
+      type: 'page'
+    unless req.isUser == true
+      where.status = BlogPost.PUBLISHED
     Promise.all [
       BlogPost
       .where where
@@ -122,9 +126,7 @@ module.exports = (System) ->
       .limit 10
       .find()
       BlogPost
-      .where
-        status: (BlogPost.PUBLISHED if req.isUser == true)
-        type: 'page'
+      .where wherePage
       .sort createdAt: -1
       .limit 10
       .find()
