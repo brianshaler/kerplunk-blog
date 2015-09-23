@@ -10,13 +10,14 @@ module.exports = React.createFactory React.createClass
 
     title: @props.post?.title ? ''
     slug: @props.post?.slug ? @slug(@props.post?.slug ? '') ? ''
+    savedSlug: @props.post?.slug ? @slug(@props.post?.slug ? '') ? ''
     body: @props.post?.body ? ''
     status: @props.post?.status ? @props.statuses[0].value
     type: @props.post?.type ? 'post'
     _id: _id
     saveUrl: @saveUrl _id
-    slugOverride: !!(@props.post._id)
-    editSlug: false
+    slugOverride: !!@props.post._id
+    showSlug: false
 
   slug: (title = @state.title) ->
     title.toLowerCase()
@@ -56,6 +57,8 @@ module.exports = React.createFactory React.createClass
       @setState
         slug: @slug()
         slugOverride: false
+    @setState
+      showSlug: false
 
   onBodyChange: (e) ->
     @setState
@@ -86,6 +89,7 @@ module.exports = React.createFactory React.createClass
         if post._id and post._id != @state._id
           window.location = "/admin/blog/edit/#{post._id}"
         else
+          post.savedSlug = post.slug ? @state.savedSlug
           @setState post
 
   render: ->
@@ -111,7 +115,7 @@ module.exports = React.createFactory React.createClass
             placeholder: 'title'
         DOM.div null,
           'Slug: '
-          if @state.editSlug
+          if @state.showSlug
             DOM.input
               value: @state.slug
               onChange: @onSlugChange
@@ -171,4 +175,11 @@ module.exports = React.createFactory React.createClass
           DOM.input
             type: 'submit'
             value: 'Save'
-            className: 'btn btn-submit'
+            className: 'btn btn-success btn-submit'
+          if !!@props.post._id
+            DOM.a
+              href: "#{@props.blogSettings.baseUrl}/#{@state.savedSlug}"
+              className: 'btn btn-default'
+            , 'view post'
+          else
+            null
