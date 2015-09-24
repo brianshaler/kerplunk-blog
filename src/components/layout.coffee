@@ -36,6 +36,11 @@ module.exports = React.createFactory React.createClass
     DOM.div
       className: 'fixed'
     ,
+      if @props.globals.public.preContent
+        _.map @props.globals.public.preContent, (componentPath, name) =>
+          Component = @props.getComponent componentPath
+          Component _.extend {}, @props,
+            key: name
       DOM.div
         className: wrapperClasses.join ' '
       ,
