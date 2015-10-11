@@ -224,9 +224,23 @@ module.exports = (System) ->
               post: 'kerplunk-blog:showPost'
               posts: 'kerplunk-blog:showPosts'
               layout: 'kerplunk-blog:layout'
-      # requirejs:
-      #   paths:
-      #     'react-markdown': '/plugins/kerplunk-blog/amd/react-markdown.js'
+        embedComponent:
+          'kerplunk-blog-component-test:test':
+            name: 'Chat'
+            description: "it's a chat box..."
+          'kerplunk-gallery:galleryItem':
+            name: 'gallery item'
+            description: "picture component"
+          'kerplunk-stream:streamItem':
+            name: 'stream item 1'
+            description: "activity item component"
+            configure: 'kerplunk-blog:configureComponent/streamItem'
+          'kerplunk-stream:streamItem2':
+            name: 'stream item 2'
+            description: "activity item component"
+      requirejs:
+        paths:
+          'react-markdown': '/plugins/kerplunk-blog/amd/react-markdown.js'
       #     'commonmark': '/plugins/kerplunk-blog/amd/index.js'
       #     'commonmark-react-renderer': '/plugins/kerplunk-blog/amd/commonmark-react-renderer.js'
       nav:
@@ -234,6 +248,8 @@ module.exports = (System) ->
           Settings: '/admin/blog'
           'Edit Post': '/admin/blog/edit'
           'New Post': '/admin/blog/new'
+      css:
+        'kerplunk-blog:compose': 'kerplunk-blog/css/compose.css'
 
   routes: routes
 

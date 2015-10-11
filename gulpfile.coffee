@@ -4,6 +4,7 @@ glut = require 'glut'
 browserify = require 'browserify'
 coffee = require 'gulp-coffee'
 coffeeAmdify = require 'glut-coffee-amdify'
+stylus = require 'gulp-stylus'
 
 header = require 'gulp-header'
 footer = require 'gulp-footer'
@@ -12,10 +13,10 @@ buffer = require 'vinyl-buffer'
 transform = require 'vinyl-transform'
 source = require 'vinyl-source-stream'
 
-gulp.task 'amdify', ->
+gulp.task 'amdify', ['browserify'], ->
   gulp.src 'public/browserify/*.js'
-  .pipe header '(function() {\n'
-  .pipe footer '\n;\nreturn require("react-markdown");});'
+  .pipe header 'define([], function () {\n'
+  .pipe footer '\n;\nreturn ReactMarkdown});'
   .pipe gulp.dest 'public/amd'
 
 gulp.task 'browserify', ->
@@ -47,7 +48,15 @@ glut gulp,
     assets:
       src: 'assets/**'
       dest: 'public'
+    runAmdify:
+      deps: ['amdify']
+      src: 'public/browserify/**.nope'
+      dest: 'public/nope'
     runBrowserify:
       deps: ['browserify']
       src: 'public/browserify/**.nope'
       dest: 'public/nope'
+    stylus:
+      runner: stylus
+      src: 'src/public/css/**/*.styl'
+      dest: 'public/css'
