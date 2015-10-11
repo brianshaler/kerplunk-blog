@@ -43,9 +43,9 @@ module.exports = React.createFactory React.createClass
           Input
             type: 'text'
             name: 'baseUrl'
-            label: 'Title'
+            label: 'Base path'
             labelClassName: 'col-xs-2'
-            wrapperClassName: 'col-xs-10 col-sm-6 col-md-6 col-lg-4'
+            wrapperClassName: 'col-xs-10'
             placeholder: 'e.g. /blog'
             defaultValue: @props.blogSettings.baseUrl
         DOM.div null, _.map @props.globals.public.blog.settings, (componentPath, name) =>
