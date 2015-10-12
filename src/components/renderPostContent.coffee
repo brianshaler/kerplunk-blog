@@ -22,6 +22,7 @@ module.exports = React.createFactory React.createClass
   processBody: (props = @props) ->
     truncatedBody = body = props.post.body
 
+    truncated = false
     if props.truncate
       maxLines = 12
       lines = body.split '\n'
@@ -32,8 +33,9 @@ module.exports = React.createFactory React.createClass
         usedLines.push line
         count += 1 + Math.floor line.length / 50
       truncatedBody = usedLines.join '\n'
+      truncated = lines.length > maxLines
 
-    truncated: truncatedBody.length != body.length
+    truncated: truncated
     truncatedBody: truncatedBody
     body: body
     postComponents: postComponents body
