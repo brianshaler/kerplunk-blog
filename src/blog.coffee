@@ -262,6 +262,10 @@ module.exports = (System) ->
     postBySlug: postBySlug
     index: showPosts
 
+  methods:
+    getBlogSettings: ->
+      _.clone blogSettings, true
+
   init: (next) ->
     System.getSettings (err, settings) ->
       # console.log 'blog settings', err, settings
