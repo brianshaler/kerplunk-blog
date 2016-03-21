@@ -3,9 +3,6 @@ React = require 'react'
 
 postComponents = require './postComponents'
 
-# name is separate to avoid requirejs or clumper from trying to require it
-# ReactMarkdownName = 'react-markdown'
-# ReactMarkdownClass = ReactMarkdown ? require ReactMarkdownName
 ReactMarkdownClass = require 'react-markdown'
 ReactMarkdownComponent = React.createFactory ReactMarkdownClass
 
