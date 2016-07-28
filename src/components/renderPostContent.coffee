@@ -8,6 +8,33 @@ ReactMarkdownComponent = React.createFactory ReactMarkdownClass
 
 {DOM} = React
 
+
+PostComponent = React.createFactory React.createClass
+  getInitialState: ->
+    postState: {}
+
+  changeHandler: (obj) ->
+    @setState
+      postState: _.extend {}, @state.postState, obj
+
+  render: ->
+    DOM.div null,
+      _.map @props.postComponents, (component, index) =>
+        if typeof component is 'string'
+          ReactMarkdownComponent
+            key: index
+            source: component
+            escapeHtml: true
+        else
+          Component = @props.getComponent component.path
+          DOM.div
+            key: index
+            className: 'clear clearfix'
+          ,
+            Component _.extend {}, @props, component.data, @state.postState,
+              key: index
+              onChange: @changeHandler
+
 module.exports = React.createFactory React.createClass
   getInitialState: ->
     @processBody()
@@ -51,20 +78,7 @@ module.exports = React.createFactory React.createClass
           else
             @state.postComponents[0]
       else
-        _.map @state.postComponents, (component, index) =>
-          if typeof component is 'string'
-            ReactMarkdownComponent
-              key: index
-              source: component
-              escapeHtml: true
-          else
-            Component = @props.getComponent component.path
-            DOM.div
-              key: index
-              className: 'clear clearfix'
-            ,
-              Component _.extend {}, @props, component.data,
-                key: index
+        PostComponent _.extend {}, @props, @state
 
       if @state.truncated
         DOM.p
